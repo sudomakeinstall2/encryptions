@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(":submit").click(function () {
+                $.post('http://localhost:5000/ajax/rsa',
+                    {
+                        method: this.id,
+                        p: $('#p')[0].value,
+                        q: $('#q')[0].value,
+                        n: $('#n')[0].value,
+                        e: $('#e')[0].value,
+                        d: $('#d')[0].value,
+                        m: $('#m')[0].value,
+                        c: $('#c')[0].value,
+                    }
+                ).done(function (data) {
+                    $.each( data, function (key, value) {
+                        if (key == 'error'){
+                            alert(value);
+                            return;
+                        }
+                        $('#'+key)[0].value = value;
+                    })
+                })
+            });
+        });
+    </script>
+
+    <meta charset="UTF-8">
+    <title>RSA</title>
+</head>
+<body>
+    <ol>
+        <li>
+            Generate primes p and q
+            <input type="submit" value="Generate" id="generate_p_q">
+            <ul>
+                <li>
+                    <label for="p">p:</label>
+                    <input type="number" id="p" name="p" min="1000" max="5000">
+                </li>
+                <li>
+                    <label for="q">q:</label>
+                    <input type="number" id="q" name="q" min="1000" max="5000">
+                </li>
+            </ul>
+
+        </li>
+        <li>
+            Compute n = pq
+            <input type="submit" value="Compute" id="compute_n">
+            <ul>
+                <li>
+                    <label for="n">n:</label>
+                    <input type="number" id="n" name="n">
+                </li>
+            </ul>
+        </li>
+        <li>
+            Set a public key e
+            <ul>
+                <li>
+                    <label for="e">e:</label>
+                    <input type="number" id="e" name="e">
+                </li>
+            </ul>
+        </li>
+        <li>
+            Calculate the private key d
+            <input type="submit" value="Calculate" id="calculate_d">
+            <ul>
+                <li>
+                    <label for="d">d:</label>
+                    <input type="number" id="d" name="d">
+                </li>
+            </ul>
+        </li>
+        <li>
+            Input a message m
+            <ul>
+                <li>
+                    <label for="m">m:</label>
+                    <input type="number" id="m" name="m">
+                </li>
+            </ul>
+        </li>
+        <li>
+            Encrypt c=m^e mod n
+            <input type="submit" value="Encrypt" id="encrypt_rsa">
+            <ul>
+                <li>
+                    <label for="c">c:</label>
+                    <input type="number" id="c" name="c">
+                </li>
+            </ul>
+        </li>
+        <li>
+            Decrypt m=c^d mod n
+            <input type="submit" value="Decrypt" id="decrypt_rsa">
+            <ul>
+                <li>
+                    <label for="decrypt">m:</label>
+                    <input type="number" id="decrypt" name="decrypt">
+                </li>
+            </ul>
+        </li>
+    </ol>
+
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(":submit").click(function () {
+                $.post('http://localhost:5000/ajax/elgamal',
+                    {
+                        method: this.id,
+                        x: $('#x')[0].value,
+                        y: $('#y')[0].value,
+                        m: $('#m')[0].value,
+                        r: $('#r')[0].value,
+                        c1: $('#c1')[0].value,
+                        c2: $('#c2')[0].value,
+                    }
+                ).done(function (data) {
+                    $.each( data, function (key, value) {
+                        if (key == 'error'){
+                            alert(value);
+                            return;
+                        }
+                        $('#'+key)[0].value = value;
+                    })
+                })
+            });
+        });
+    </script>
+
+    <meta charset="UTF-8">
+    <title>Elgamal</title>
+</head>
+<body>
+    <ol>
+        <li>
+            Given a large prime p=65537, a primary root g=3
+        </li>
+        <li>
+            Choose a private key x
+            <ul>
+                <li>
+                    <label for="x">x:</label>
+                    <input type="number" id="x" name="x">
+                </li>
+            </ul>
+        </li>
+        <li>
+            Compute the corresponding public key y=g^x mod p
+            <input type="submit" class="button" value="Compute" id="compute_y">
+            <ul>
+                <li>
+                    <label for="y">y:</label>
+                    <input type="number" id="y" name="y">
+                </li>
+            </ul>
+        </li>
+        <li>
+            Input a message m
+            <ul>
+                <li>
+                    <label for="m">m:</label>
+                    <input type="number" id="m" name="m">
+                </li>
+            </ul>
+        </li>
+        <li>
+            Encrypt
+            <ol>
+                <li>
+                    Choose a random number r
+                    <ul>
+                        <li>
+                            <label for="r">r:</label>
+                            <input type="number" id="r" name="r">
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    Compute c1=g^r mod p
+                    <input type="submit" value="Compute" id="compute_c1">
+                    <ul>
+                        <li>
+                            <label for="c1">c1:</label>
+                            <input type="number" id="c1" name="c1">
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    Compute c2=m*y^r mod p
+                    <input type="submit" value="Compute" id="compute_c2">
+                    <ul>
+                        <li>
+                            <label for="c2">c2:</label>
+                            <input type="number" id="c2" name="c2">
+                        </li>
+                    </ul>
+                </li>
+            </ol>
+
+        </li>
+        <li>
+            Decrypt C=(c1,c2)
+            <input type="submit" value="Decrypt" id="decrypt">
+            <ul>
+                <li>
+                    m = c2/(c1^r mod p)
+                </li>
+                <li>
+                    <label for="dec">m:</label>
+                    <input type="number" id="dec" name="dec">
+                </li>
+            </ul>
+        </li>
+    </ol>
+
+</body>
+</html>

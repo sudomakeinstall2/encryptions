@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(":submit").click(function () {
+                $.post('http://localhost:5000/ajax/dh',
+                    {
+                        method: this.id,
+                        x: $('#x')[0].value,
+                        X: $('#X')[0].value,
+                        y: $('#y')[0].value,
+                        Y: $('#Y')[0].value,
+                    }
+                ).done(function (data) {
+                    $.each( data, function (key, value) {
+                        if (key == 'error'){
+                            alert(value);
+                            return;
+                        }
+                        $('#'+key)[0].value = value;
+                    })
+                })
+            });
+        });
+    </script>
+
+    <meta charset="UTF-8">
+    <title>RSA</title>
+</head>
+<body>
+    <ol>
+        <li>
+            Given a large prime p=65537, a primary root g=3
+        </li>
+        <li>
+            Choose a random number x
+            <ul>
+                <li>
+                    <label for="x">x:</label>
+                    <input type="number" id="x" name="x">
+                </li>
+            </ul>
+        </li>
+        <li>
+            Compute X=g^x mod p
+            <input type="submit" value="Compute" id="compute_X">
+            <ul>
+                <li>
+                    <label for="X">X:</label>
+                    <input type="number" id="X" name="X">
+                </li>
+            </ul>
+        </li>
+        <li>
+            Choose a random number y
+            <ul>
+                <li>
+                    <label for="y">y:</label>
+                    <input type="number" id="y" name="y">
+                </li>
+            </ul>
+        </li>
+        <li>
+            Compute Y=g^y mod p
+            <input type="submit" value="Compute" id="compute_Y">
+            <ul>
+                <li>
+                    <label for="Y">Y:</label>
+                    <input type="number" id="Y" name="Y">
+                </li>
+            </ul>
+        </li>
+        <li>
+            Calculate the session key K=g^(xy) mod p
+            <ul>
+                <li>
+                    K=Y^x mod p
+                    <input type="submit" value="Calculate" id="compute_k1">
+                    <ul>
+                        <li>
+                            <label for="K1">K:</label>
+                            <input type="number" id="K1" name="K1">
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    K=X^y mod p
+                    <input type="submit" value="Calculate" id="compute_k2">
+                    <ul>
+                        <li>
+                            <label for="K2">K:</label>
+                            <input type="number" id="K2" name="K2">
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+    </ol>
+
+</body>
+</html>
