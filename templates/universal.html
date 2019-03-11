@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="/static/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(":submit").click(function () {
+                $.post('http://localhost:5000/ajax/universal',
+                    {
+                        method: this.id,
+                        a: $('#a')[0].value,
+                        A: $('#A')[0].value,
+                        m: $('#m')[0].value,
+                        r: $('#r')[0].value,
+                        s: $('#s')[0].value,
+                        X: $('#X')[0].value,
+                        Y: $('#Y')[0].value,
+                        W: $('#W')[0].value,
+                        Z: $('#Z')[0].value,
+                        dec: $('#dec')[0].value,
+                        check: $('#check')[0].value,
+                        rr: $('#rr')[0].value,
+                        ss: $('#ss')[0].value,
+                        XX: $('#XX')[0].value,
+                        YY: $('#YY')[0].value,
+                        WW: $('#WW')[0].value,
+                        ZZ: $('#ZZ')[0].value,
+                        re_dec: $('#re_dec')[0].value,
+                        re_check: $('#re_check')[0].value,
+                    }
+                ).done(function (data) {
+                    $.each( data, function (key, value) {
+                        if (key === 'error'){
+                            alert(value);
+                            return;
+                        }
+                        $('#'+key)[0].value = value;
+                    })
+                })
+            });
+        });
+    </script>
+
+    <meta charset="UTF-8">
+    <title>Universal ElGamal Re-Encryption</title>
+</head>
+<body>
+    <ol>
+        <li>
+            Given a large prime p=65537, a primary root g=3
+        </li>
+        <li>
+            Choose a private key a
+            <ul>
+                <li>
+                    <label for="a">a:</label>
+                    <input type="number" id="a" name="a">
+                </li>
+            </ul>
+        </li>
+        <li>
+            Compute the corresponding public key A=g^a mod p
+            <input type="submit" class="button" value="Compute" id="compute_A">
+            <ul>
+                <li>
+                    <label for="A">A:</label>
+                    <input type="number" id="A" name="A">
+                </li>
+            </ul>
+        </li>
+
+        <li>
+            Input a message m
+            <ul>
+                <li>
+                    <label for="m">m:</label>
+                    <input type="number" id="m" name="m">
+                </li>
+            </ul>
+        </li>
+        <li>
+            Encrypt
+            <ol>
+                <li>
+                    Choose two random numbers r, s
+                    <ul>
+                        <li>
+                            <label for="r">r:</label>
+                            <input type="number" id="r" name="r">
+                        </li>
+                        <li>
+                            <label for="s">s:</label>
+                            <input type="number" id="s" name="s">
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    Compute the X, Y, W, Z
+                    <input type="submit" class="button" value="Compute" id="compute_xywz">
+                    <ul>
+                        <li>
+                            <label for="X">X:</label>
+                            <input type="number" id="X" name="X">
+                        </li>
+                        <li>
+                            <label for="Y">Y:</label>
+                            <input type="number" id="Y" name="Y">
+                        </li>
+                        <li>
+                            <label for="W">W:</label>
+                            <input type="number" id="W" name="W">
+                        </li>
+                        <li>
+                            <label for="Z">Z:</label>
+                            <input type="number" id="Z" name="Z">
+                        </li>
+                    </ul>
+                </li>
+            </ol>
+        </li>
+        <li>
+            Decrypt C=(X,Y,W,Z)
+            <input type="submit" value="Decrypt" id="decrypt">
+            <ul>
+                <li>
+                    m = X/Y^a mod p
+                    check = W/z^a == 1
+                </li>
+                <li>
+                    <label for="dec">m:</label>
+                    <input type="number" id="dec" name="dec">
+                </li>
+                <li>
+                    <label for="check">check:</label>
+                    <input type="number" id="check" name="check">
+                </li>
+            </ul>
+        </li>
+        <li>
+            Re-Encrypt
+            <ol>
+                <li>
+                    Choose two random numbers rr, ss
+                    <ul>
+                        <li>
+                            <label for="rr">rr:</label>
+                            <input type="number" id="rr" name="rr">
+                        </li>
+                        <li>
+                            <label for="ss">ss:</label>
+                            <input type="number" id="ss" name="ss">
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    Compute the XX, YY, WW, ZZ
+                    <input type="submit" class="button" value="Compute" id="re_encrypt">
+                    <ul>
+                        <li>
+                            <label for="XX">XX:</label>
+                            <input type="number" id="XX" name="XX">
+                        </li>
+                        <li>
+                            <label for="YY">YY:</label>
+                            <input type="number" id="YY" name="YY">
+                        </li>
+                        <li>
+                            <label for="WW">WW:</label>
+                            <input type="number" id="WW" name="WW">
+                        </li>
+                        <li>
+                            <label for="ZZ">ZZ:</label>
+                            <input type="number" id="ZZ" name="ZZ">
+                        </li>
+                    </ul>
+                </li>
+            </ol>
+        </li>
+        <li>
+            Decrypt CC=(XX,YY,WW,ZZ)
+            <input type="submit" value="Decrypt" id="re_decrypt">
+            <ul>
+                <li>
+                    m = XX/YY^a mod p
+                    check = WW/ZZ^a == 1
+                </li>
+                <li>
+                    <label for="re_dec">m:</label>
+                    <input type="number" id="re_dec" name="re_dec">
+                </li>
+                <li>
+                    <label for="re_check">check:</label>
+                    <input type="number" id="re_check" name="re_check">
+                </li>
+            </ul>
+        </li>
+    </ol>
+</body>
+</html>
